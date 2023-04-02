@@ -1,10 +1,14 @@
+import { CssBaseline, ThemeProvider, Typography } from "@mui/material"
+import { createAppTheme } from "./configuration/theme"
 
 const App = () => {
 
   return (
-    <div>
-      <h1>Techmapr</h1>
-    </div>
+    <ThemeProvider theme={createAppTheme()}>
+      <CssBaseline>
+        <Typography variant="h1">Techmapr</Typography>
+      </CssBaseline>
+    </ThemeProvider>
   )
 }
 
