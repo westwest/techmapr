@@ -1,5 +1,7 @@
 import { StackedLineChart } from "@mui/icons-material"
 import { AppBar, CssBaseline, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import ROUTES from "./configuration/routes"
 import { createAppTheme } from "./configuration/theme"
 
 const Header = () => (
@@ -24,6 +26,7 @@ const App = () => {
       <CssBaseline>
         <Header />
         <Typography variant="h1">Techmapr</Typography>
+        <RouterProvider router={createBrowserRouter(ROUTES)} />
       </CssBaseline>
     </ThemeProvider>
   )
