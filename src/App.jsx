@@ -1,8 +1,9 @@
 import { StackedLineChart } from "@mui/icons-material"
-import { AppBar, CssBaseline, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
+import { AppBar, CssBaseline, IconButton, Paper, ThemeProvider, Toolbar, Typography } from "@mui/material"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import ROUTES from "./configuration/routes"
-import { createAppTheme } from "./configuration/theme"
+import ROUTES from "src/configuration/routes"
+import { createAppTheme } from "src/configuration/theme"
+import { RadarStore } from "src/shared/RadarStore"
 
 const Header = () => (
   <AppBar position="sticky" sx={{ zIndex: theme => theme.zIndex.drawer + 1}}>
@@ -20,14 +21,13 @@ const Header = () => (
 )
 
 const App = () => {
-
   return (
     <ThemeProvider theme={createAppTheme()}>
-      <CssBaseline>
+      <CssBaseline />
+      <RadarStore>
         <Header />
-        <Typography variant="h1">Techmapr</Typography>
         <RouterProvider router={createBrowserRouter(ROUTES)} />
-      </CssBaseline>
+      </RadarStore>
     </ThemeProvider>
   )
 }
