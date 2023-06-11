@@ -60,8 +60,8 @@ const Dashboard = () => (
     </Grid>
 )
 
-const createRoutes = namespace => [
+const createRoutes = (namespace, iam) => iam ? [
     {path: namespace, element: <Dashboard />}
-]
+] : []
 
 export default createRoutes

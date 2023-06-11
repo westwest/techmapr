@@ -1,9 +1,23 @@
 import { StackedLineChart } from "@mui/icons-material"
-import { AppBar, CssBaseline, IconButton, Paper, ThemeProvider, Toolbar, Typography } from "@mui/material"
+import { AppBar, CssBaseline, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import ROUTES from "src/configuration/routes"
 import { createAppTheme } from "src/configuration/theme"
 import { RadarStore } from "src/shared/RadarStore"
+import FirebaseProvider, { useFirebase } from "./shared/FirebaseProvider"
+import { getUserRoutes } from "./features/IAM/iamService"
+import UserWidget from "./features/IAM/UserWidget"
+
+
+const Router = ({children}) => {
+  const {user} = useFirebase()
+  const routes = getUserRoutes(user)
+
+  return (
+    <RouterProvider router={createBrowserRouter(routes)}>
+      {children}
+    </RouterProvider>
+  )
+} 
 
 const Header = () => (
   <AppBar position="sticky" sx={{ zIndex: theme => theme.zIndex.drawer + 1}}>
@@ -15,19 +29,23 @@ const Header = () => (
         >
           <StackedLineChart />
         </IconButton>
-        <Typography varaint="h6" noWrap>TechnologyMapr</Typography>
+        <Typography varaint="h6" noWrap sx={{flexGrow: 1}}>TechnologyMapr</Typography>
+        <UserWidget />
       </Toolbar>
     </AppBar>
 )
 
-const App = () => {
+const App = ({firebase}) => {
+
   return (
     <ThemeProvider theme={createAppTheme()}>
       <CssBaseline />
-      <RadarStore>
-        <Header />
-        <RouterProvider router={createBrowserRouter(ROUTES)} />
-      </RadarStore>
+      <FirebaseProvider firebaseApp={firebase}>
+        <RadarStore>
+          <Header />
+          <Router />
+        </RadarStore>
+      </FirebaseProvider>
     </ThemeProvider>
   )
 }

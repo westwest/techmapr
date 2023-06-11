@@ -71,7 +71,7 @@ const Editor = () => {
     )
 }
 
-const createRoutes = namespace => [
+const createRoutes = (namespace, iam) => iam ? [
     {
         path: namespace, 
         element: <Outlet />,
@@ -88,6 +88,6 @@ const createRoutes = namespace => [
             },
         ]
     },
-]
+] : []
 
 export default createRoutes
