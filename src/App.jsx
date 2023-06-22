@@ -1,21 +1,30 @@
 import { StackedLineChart } from "@mui/icons-material"
-import { AppBar, CssBaseline, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { AppBar, CircularProgress, CssBaseline, IconButton, ThemeProvider, Toolbar, Typography } from "@mui/material"
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
 import { createAppTheme } from "src/configuration/theme"
 import { RadarStore } from "src/shared/RadarStore"
 import FirebaseProvider, { useFirebase } from "./shared/FirebaseProvider"
-import { getUserRoutes } from "./features/IAM/iamService"
 import UserWidget from "./features/IAM/UserWidget"
+import { APP_MODULES } from "./configuration/modules"
 
+const AppRoot = ({firebaseLoading}) => (
+  <>
+    <Header />
+    {!firebaseLoading ? <Outlet /> : <CircularProgress />}
+  </>
+)
 
-const Router = ({children}) => {
-  const {user} = useFirebase()
-  const routes = getUserRoutes(user)
+const Router = () => {
+  const {user, loading} = useFirebase()
+  const userModules = APP_MODULES.flatMap(m => m.module(m.namespace, user))
+
+  const routes = [{
+    path: "/", 
+    element: <AppRoot firebaseLoading={loading} />, 
+    children: userModules}]
 
   return (
-    <RouterProvider router={createBrowserRouter(routes)}>
-      {children}
-    </RouterProvider>
+    <RouterProvider router={createBrowserRouter(routes)} />
   )
 } 
 
@@ -42,7 +51,6 @@ const App = ({firebase}) => {
       <CssBaseline />
       <FirebaseProvider firebaseApp={firebase}>
         <RadarStore>
-          <Header />
           <Router />
         </RadarStore>
       </FirebaseProvider>

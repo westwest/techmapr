@@ -1,5 +1,4 @@
 import { Button } from "@mui/material"
-import { appSignIn, appSignOut } from "./iamService"
 import { useFirebase, withFirebase } from "src/shared/FirebaseProvider"
 
 const UserWidget = () => {
@@ -7,13 +6,13 @@ const UserWidget = () => {
 
     return user ? (
         <Button 
-            onClick={() => appSignOut(auth)}
+            onClick={auth.signOut}
             color="secondary"
         >
             Sign Out
         </Button>
     ) : (
-        <Button onClick={() => appSignIn(auth)} variant="contained" color="secondary">
+        <Button onClick={auth.initAuth} variant="contained" color="secondary">
             Sign In
         </Button>
     )
