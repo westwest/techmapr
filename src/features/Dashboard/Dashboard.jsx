@@ -14,7 +14,7 @@ const ListWidget = ({dataProvider, title}) => {
                 <List>
                     {items.map(i => (
                         <Fragment key={i.id}>
-                            <ClickListItem component={Link} to={`/radar/${i.id}`}>{i.name}</ClickListItem>
+                            <ClickListItem component={Link} to={`/radars/${i.id}`}>{i.name}</ClickListItem>
                             <Divider />
                         </Fragment>
                     ))}
@@ -53,7 +53,7 @@ const Dashboard = () => (
         <Grid item xs={4}>
             <Card>
                 <CardContent>
-                    <Button component={Link} to="radar/new">Create New Radar</Button>
+                    <Button component={Link} to="radars/new">Create New Radar</Button>
                 </CardContent>
             </Card>
         </Grid>

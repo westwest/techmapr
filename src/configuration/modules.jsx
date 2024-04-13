@@ -1,5 +1,5 @@
 import Dashboard from 'src/features/Dashboard/Dashboard'
-import Editor from 'src/features/Editor/Editor'
+import Radars from 'src/features/Radars/Radars'
 import IAM from 'src/features/IAM/IAM'
 import Presenter from 'src/features/Presenter/Presenter'
 
@@ -9,7 +9,7 @@ const notFound = {
 
 export const APP_MODULES = [
     {module: Dashboard, namespace: "/"},
-    {module: Editor, namespace: "/radar"},
+    {module: Radars, namespace: "/radars"},
     {module: Presenter, namespace: "/view"},
     {module: IAM, namespace: "/auth"},
     {module: () => [notFound], namespace: ""}
