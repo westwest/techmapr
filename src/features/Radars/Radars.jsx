@@ -10,6 +10,8 @@ import RadarMeta from "./RadarMeta"
 
 const items = [{id: "1", name: "Item 1"}, {id: "2", name: "Item 2"}]
 
+const FEATURE_LABEL="Radars"
+
 const Editor = () => {
     const {radarId} = useParams()
     const [params, setSearchParams] = useSearchParams()
@@ -71,7 +73,7 @@ const Editor = () => {
     )
 }
 
-const createRoutes = (namespace, iam) => iam ? [
+const createRoutes = namespace => [
     {
         path: namespace, 
         element: <Outlet />,
@@ -88,6 +90,12 @@ const createRoutes = (namespace, iam) => iam ? [
             },
         ]
     },
-] : []
+]
 
-export default createRoutes
+const initialize = (namespace, iam) => ({
+    name: FEATURE_LABEL,
+    routes: iam ? createRoutes(namespace) : [],
+    widgets: []
+})
+
+export default initialize

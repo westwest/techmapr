@@ -17,12 +17,12 @@ const AppRoot = ({firebaseLoading}) => (
 
 const Router = () => {
   const {user, loading} = useFirebase()
-  const userModules = APP_MODULES.flatMap(m => m.module(m.namespace, user))
+  const moduleRoutes = APP_MODULES.flatMap(m => m.module(m.namespace, user).routes)
 
   const routes = [{
     path: "/", 
     element: <AppRoot firebaseLoading={loading} />, 
-    children: userModules}]
+    children: moduleRoutes}]
 
   return (
     <RouterProvider router={createBrowserRouter(routes)} />

@@ -5,6 +5,8 @@ import ClickListItem from "src/shared/components/ClickListItem"
 import { useRadarStore } from "src/shared/RadarStore"
 import { useGetTechnologies } from '../Technologies/useGetTechnologies'
 
+const FEATURE_LABEL="dashboard"
+
 const ListWidget = ({dataProvider, title}) => {
     const {data: items, isLoading, sourceFeature} = dataProvider()
 
@@ -69,8 +71,13 @@ const Dashboard = () => (
     </Grid>
 )
 
-const createRoutes = (namespace, iam) => iam ? [
+const createRoutes = namespace => ([
     {path: namespace, element: <Dashboard />}
-] : []
+])
 
-export default createRoutes
+const initialize = (namespace, iam) => ({
+    name: FEATURE_LABEL,
+    routes: iam ? createRoutes(namespace) : []
+})
+
+export default initialize

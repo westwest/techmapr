@@ -1,6 +1,8 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { useFirebase } from "src/shared/FirebaseProvider";
 
+const FEATURE_LABEL="iam"
+
 const ExternalFront = () => {
     const {auth} = useFirebase()
 
@@ -23,8 +25,13 @@ const ExternalFront = () => {
     )
 }
 
-const createRoutes = (_, iam) => !iam ? [
+const ROUTES = [
     {path: "", element: <ExternalFront />}
-] : []
+]
 
-export default createRoutes
+const initialize = (_, iam) => ({
+    name: FEATURE_LABEL,
+    routes: !iam ? ROUTES : []
+})
+
+export default initialize

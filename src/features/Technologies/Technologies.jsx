@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom"
 
+const FEATURE_LABEL="Technologies"
 
 const CreateTech = () => {
     return (
@@ -7,7 +8,7 @@ const CreateTech = () => {
     )
 }
 
-const createRoutes = (namespace, iam) => iam ? [
+const createRoutes = namespace =>  [
     {
         path: namespace, 
         element: <Outlet />,
@@ -20,6 +21,12 @@ const createRoutes = (namespace, iam) => iam ? [
             },
         ]
     },
-] : []
+]
 
-export default createRoutes
+const initialize = (namespace, iam) => ({
+    name: FEATURE_LABEL,
+    routes: iam ? createRoutes(namespace) : [],
+    widgets: []
+})
+
+export default initialize

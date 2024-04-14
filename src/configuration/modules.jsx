@@ -14,5 +14,5 @@ export const APP_MODULES = [
     {module: Technologies, namespace: "/technologies"},
     {module: Presenter, namespace: "/view"},
     {module: IAM, namespace: "/auth"},
-    {module: () => [notFound], namespace: ""}
+    {module: () => ({ name: "404", routes: [notFound]}), namespace: ""}
 ]
