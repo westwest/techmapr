@@ -1,13 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, signOut } from "firebase/auth";
+import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import { FIREBASE_CONFIG } from "src/configuration/firebase";
 
 const STORAGE_KEY = "firebase"
 
-export const initFirebase = async () => {
-    const app = await initializeApp(FIREBASE_CONFIG);
-}
+export const initFirebase = async () => await initializeApp(FIREBASE_CONFIG);
 
 const firebaseContext = createContext({})
 
@@ -25,6 +24,7 @@ export const withFirebase = (Component) => {
 
 const FirebaseProvider = ({children, firebaseApp}) => {
     const auth = getAuth(firebaseApp)
+    const db = getFirestore(firebaseApp)
     const [values, setValues] = useState({
         auth: {
             authInstance: auth, 
@@ -33,6 +33,10 @@ const FirebaseProvider = ({children, firebaseApp}) => {
                 signInWithRedirect(auth, new GoogleAuthProvider(auth))
             },
             signOut: () => signOut(auth)
+        },
+        db: {
+            dbInstance: db,
+            getAllInCollection: async name => await getDocs(collection(db, name))
         },
         loading: false
     })
