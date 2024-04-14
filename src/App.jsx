@@ -3,10 +3,12 @@ import { AppBar, CircularProgress, CssBaseline, IconButton, ThemeProvider, Toolb
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
 import { createAppTheme } from "src/configuration/theme"
 import { RadarStore } from "src/shared/RadarStore"
-import FirebaseProvider, { useFirebase } from "./shared/FirebaseProvider"
+import { useFirebase } from "./shared/FirebaseProvider"
 import UserWidget from "./features/IAM/UserWidget"
 import { APP_MODULES } from "./configuration/modules"
 import QueryClientProvider from "./shared/QueryClientProvider"
+import { AppAtoms, AtomHooks } from "./shared/atoms"
+import { useEffect } from "react"
 
 const AppRoot = ({firebaseLoading}) => (
   <>
@@ -16,8 +18,9 @@ const AppRoot = ({firebaseLoading}) => (
 )
 
 const Router = () => {
-  const {user, loading} = useFirebase()
-  const moduleRoutes = APP_MODULES.flatMap(m => m.module(m.namespace, user).routes)
+  const {loading} = useFirebase()
+  const modules = AtomHooks.useAtomValue(AppAtoms.appFeaturesAtom)
+  const moduleRoutes = modules.flatMap(m => m.routes)
 
   const routes = [{
     path: "/", 
@@ -45,18 +48,29 @@ const Header = () => (
     </AppBar>
 )
 
-const App = ({firebase}) => {
+const AppInitializer = ({user}) => {
+  const modules = APP_MODULES.map(m => m.module(m.namespace, user)).filter(m => m) ?? []
+  const setModules = AtomHooks.useSetAtom(AppAtoms.appFeaturesAtom)
+
+  useEffect(() => {
+    setModules(modules)
+  }, [user])
+  
+  
+}
+
+const App = () => {
+  const {user} = useFirebase()
 
   return (
     <ThemeProvider theme={createAppTheme()}>
       <CssBaseline />
-      <FirebaseProvider firebaseApp={firebase}>
         <QueryClientProvider>
+          <AppInitializer user={user} />
           <RadarStore>
             <Router />
           </RadarStore>
         </QueryClientProvider>
-      </FirebaseProvider>
     </ThemeProvider>
   )
 }

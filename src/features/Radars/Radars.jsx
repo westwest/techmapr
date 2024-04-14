@@ -95,7 +95,17 @@ const createRoutes = namespace => [
 const initialize = (namespace, iam) => ({
     name: FEATURE_LABEL,
     routes: iam ? createRoutes(namespace) : [],
-    widgets: []
+    widgets: [{
+        dataSource: () => {
+            const {store} = useRadarStore()
+            return {data: store}
+        },
+        key: `${namespace}.widget.listMine`,
+        title: `My Radars`,
+        type: "list",
+        actionProps: {},
+        origin: `${namespace}`
+    }]
 })
 
 export default initialize

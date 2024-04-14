@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom"
+import { useGetTechnologies } from "./useGetTechnologies"
 
 const FEATURE_LABEL="Technologies"
 
@@ -26,7 +27,14 @@ const createRoutes = namespace =>  [
 const initialize = (namespace, iam) => ({
     name: FEATURE_LABEL,
     routes: iam ? createRoutes(namespace) : [],
-    widgets: []
+    widgets: [{
+        dataSource: useGetTechnologies,
+        key: `${namespace}.widget.listall`,
+        title: `Technologies`,
+        type: "list",
+        actionProps: {},
+        origin: `${namespace}`
+    }]
 })
 
 export default initialize
