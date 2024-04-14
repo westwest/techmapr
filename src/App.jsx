@@ -6,6 +6,7 @@ import { RadarStore } from "src/shared/RadarStore"
 import FirebaseProvider, { useFirebase } from "./shared/FirebaseProvider"
 import UserWidget from "./features/IAM/UserWidget"
 import { APP_MODULES } from "./configuration/modules"
+import QueryClientProvider from "./shared/QueryClientProvider"
 
 const AppRoot = ({firebaseLoading}) => (
   <>
@@ -50,9 +51,11 @@ const App = ({firebase}) => {
     <ThemeProvider theme={createAppTheme()}>
       <CssBaseline />
       <FirebaseProvider firebaseApp={firebase}>
-        <RadarStore>
-          <Router />
-        </RadarStore>
+        <QueryClientProvider>
+          <RadarStore>
+            <Router />
+          </RadarStore>
+        </QueryClientProvider>
       </FirebaseProvider>
     </ThemeProvider>
   )

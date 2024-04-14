@@ -1,20 +1,21 @@
 import { Fragment } from 'react'
-import { Button, Card, CardContent, CardHeader, Divider, Grid, List, ListItem, TextField } from "@mui/material"
+import { Button, Card, CardContent, CardHeader, CircularProgress, Divider, Grid, List, TextField } from "@mui/material"
 import { Link } from "react-router-dom"
 import ClickListItem from "src/shared/components/ClickListItem"
 import { useRadarStore } from "src/shared/RadarStore"
+import { useGetTechnologies } from '../Technologies/useGetTechnologies'
 
 const ListWidget = ({dataProvider, title}) => {
-    const {store: items} = dataProvider()
+    const {data: items, isLoading, sourceFeature} = dataProvider()
 
-    return (
+    return isLoading ? <CircularProgress /> : (
         <Card>
             <CardHeader title={title} />
             <CardContent>
                 <List>
                     {items.map(i => (
                         <Fragment key={i.id}>
-                            <ClickListItem component={Link} to={`/radars/${i.id}`}>{i.name}</ClickListItem>
+                            <ClickListItem component={Link} to={`/${sourceFeature}/${i.id}`}>{i.name}</ClickListItem>
                             <Divider />
                         </Fragment>
                     ))}
@@ -27,7 +28,15 @@ const ListWidget = ({dataProvider, title}) => {
 const Dashboard = () => (
     <Grid container spacing={2}>
         <Grid item xs={4}>
-            <ListWidget dataProvider={useRadarStore} title="My Radars" />
+            <ListWidget dataProvider={() => {
+                const {store} = useRadarStore()
+                return {data: store, sourceFeature: "radars"}
+                }} title="My Radars" />
+        </Grid>
+        <Grid item xs={4}>
+            <ListWidget dataProvider={() => {
+                return {...useGetTechnologies(), sourceFeature: "technologies" }
+                }} title="Technologies" />
         </Grid>
         <Grid item xs={4}>
             <Card>
