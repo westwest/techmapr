@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom"
 import { useGetTechnologies } from "./useGetTechnologies"
+import AddTechModal from "./AddTechModal"
 
 const FEATURE_LABEL="Technologies"
 
@@ -34,7 +35,17 @@ const initialize = (namespace, iam) => ({
         type: "list",
         actionProps: {},
         origin: `${namespace}`
-    }]
+    }],
+    modals: [
+        {
+            key: "addTech",
+            modal: AddTechModal
+        }
+    ]
 })
+
+export const MODAL_KEYS = {
+    
+}
 
 export default initialize
